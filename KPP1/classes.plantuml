@@ -1,0 +1,101 @@
+@startuml
+top to bottom direction
+skinparam headerFontSize 30
+skinparam headerFontStyle bold
+skinparam classAttributeIconSize 0
+scale 1.0
+package application {
+class application.Main {
+.. Fields  ..
+-controller : SnakesWindowController
+~decision : char
+~killYourself : boolean
+~nextStep : char
+-notation : StringBuilder
+-parts : ArrayList
+-primaryStage : Stage
+-root : AnchorPane
+~steps : int
+.. Methods ..
++CollisionCheck() : boolean
++End() : void
++GameCicle() : void
++MoveParts() : void
++start(Stage) : void
++windowInit() : void
+.. Static ..
++ {static} main() : void
+.. Interiors ..
+~class Oracle
+~class Server
+}
+
+}
+package model {
+class model.Saver {
+.. Methods ..
+.. Static ..
++ {static} Load() : String
++ {static} Save() : void
+}
+class model.AI {
+.. Methods ..
+.. Static ..
++ {static} MakeMove() : int
++ {static} StepsToApple() : int
+}
+
+}
+package view {
+class view.SnakesWindowController {
+.. Fields  ..
+-WhereSnakeGoes : int
+-apple : Circle
+-autoPlay : CheckMenuItem
+-easy : RadioMenuItem
+-end : MenuItem
+-field : AnchorPane
+-future : TextField
+-hard : RadioMenuItem
+-head : Rectangle
+-main : Main
+-medium : RadioMenuItem
+~movement : Timeline
+-playLastGame : MenuItem
+-retrospective : boolean
+-start : MenuItem
+-startPressed : boolean
+-steps : TextField
+-text : TextField
+.. Methods ..
++EndHandle(ActionEvent) : void
++GetAppleX() : double
++GetAppleY() : double
++GetHeadX() : double
++GetHeadY() : double
++GetWhereSnakeGoes() : int
++KeyboardHandler(KeyEvent) : void
++MoveHead(double, double) : void
++PlayLastGameHandler(ActionEvent) : void
++RelocateApple() : void
++SetAppleX(int) : void
++SetAppleY(int) : void
++SetFuture(String) : void
++SetSteps(String) : void
++SetText(String) : void
++SetWhereSnakeGoes(int) : void
++ShowLastGameHandle(ActionEvent) : void
++StartHandle(ActionEvent) : void
++StopTheGame() : void
+-initialize() : void
++isAuto() : boolean
++isEasy() : boolean
++isHard() : boolean
++isMedium() : boolean
++isRetrospective() : boolean
++setMain(Main) : void
+}
+
+}
+application.Main "1..1" o..o "1..1" view.SnakesWindowController
+@enduml
