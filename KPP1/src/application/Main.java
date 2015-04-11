@@ -244,18 +244,30 @@ public class Main extends Application {
 				switch (controller.whatSorting()){
 				case 1:	//Scala сортировка
 					if(controller.whatTypeOfSorting() == 0){
-						notation = Sorter.SortNotationBTW(notation);
+						if(controller.isAlternativeSort())
+							Saver.Save(Sorter.SortNotationBTW(notation,true).toString(),"TimeSorted_Scala_BTW.txt");
+						else
+							Saver.Save(Sorter.SortNotationBTW(notation,false).toString(),"NormalSort_Scala_BTW.txt");
 					}
 					else{
-						notation = Sorter.SortNotationWTB(notation);
+						if(controller.isAlternativeSort())
+							Saver.Save(Sorter.SortNotationWTB(notation,true).toString(),"TimeSorted_Scala_WTB.txt");
+						else
+							Saver.Save(Sorter.SortNotationWTB(notation,false).toString(),"NormalSort_Scala_WTB.txt");
 					}
 					break;
 				case 2: //Java сортировка
 					if(controller.whatTypeOfSorting() == 0){
-						notation = JavaNotationSort.sort(notation,false);	//Best to worst
+						if(controller.isAlternativeSort())
+							Saver.Save(JavaNotationSort.sort(notation,false,true).toString(),"TimeSorted_Java_BTW.txt");	//Best to worst
+						else
+							Saver.Save(JavaNotationSort.sort(notation,false,false).toString(),"NormalSort_Java_BTW.txt");
 					}
 					else{
-						notation = JavaNotationSort.sort(notation,true);	//Worst to best
+						if(controller.isAlternativeSort())
+							Saver.Save(JavaNotationSort.sort(notation,true,true).toString(),"TimeSorted_Java_WTB.txt");	//Worst to best
+						else
+							Saver.Save(JavaNotationSort.sort(notation,true,false).toString(),"NormalSort_Java_WTB.txt");
 					}
 					break;
 				}

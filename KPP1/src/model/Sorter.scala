@@ -13,7 +13,7 @@ object Sorter {
    * @param notation сыра€ нотаци€
    * @return отсортированную нотацию 
    */
-  def SortNotationBTW(notation : java.lang.StringBuilder) : java.lang.StringBuilder = {
+  def SortNotationBTW(notation : java.lang.StringBuilder, isAlternative : Boolean) : java.lang.StringBuilder = {
     var game = 0  //счЄтчик игр
     var entryes = new java.util.Vector [Int]          //точки входа дл€ игр
     var successfulness = new java.util.Vector [Int]   //успушность игр
@@ -24,66 +24,68 @@ object Sorter {
     @tailrec
     // ‘ункци€ дл€ рекурсивного прохода по нотации, записи точек входа и успешности игр
     def CollectInf(i : Int) : Unit = {
-      if (notation.charAt(i) == 'A') {
-        successfulness.set(game, successfulness.get(game)+1)
+      if (notation.charAt(i) == 'A' && !isAlternative || 
+          isAlternative && notation.charAt(i) >= 'A' && notation.charAt(i) <= 'Z') {
+        successfulness.set(game, successfulness.get(game)+1)  //наращиваем успешность игры
       }
-      else{
-        if (notation.charAt(i) == 'E'){
-          game+=1
-          entryes.add(i+1)
-          successfulness.add(0)
-        }
+      if (notation.charAt(i) == 'E'){   //если провер€ема€ игра закончилась
+        game+=1                         //наращиваем счетчик игр
+        entryes.add(i+1)                //добавл€ем новую точку входа
+        successfulness.add(0)           //и новый счетчик успеха
       }
-      if (i+1 != notation.length()){
+      if (i+1 != notation.length()){      //если есть ещЄ игры, продолжаем парсинг
         CollectInf(i+1)
       }
     }
     
-    CollectInf(0)
+    CollectInf(0)  //вызываем саму функцию
     
     @tailrec
     //‘ункци€ рекурсивного составлени€ отсортированной нотации
     def WriteOrderedBTW(i : Int) : Unit = {
-      var changed : Boolean = false
+      var changed : Boolean = false   //была ли найдена нова€ максимальна€ игра
       var j = 0
-      var bestGame = 0
-      var maxScore = -1
-      while (j < game){
+      var bestGame = 0    //номер лучшей игры
+      var maxScore = -1   //счет лучшей игры
+      while (j < game){   //ищем лучшую игру
         if (successfulness.get(j) > maxScore){
-          changed = true
-          maxScore = successfulness.get(j)
-          bestGame = j
+          changed = true                    //устанавливаем флаг того, что найден результат
+          maxScore = successfulness.get(j)  //запоминаем лучший счет
+          bestGame = j                      //и номер лучшей игры
         }
         j+=1
       }
-      if (changed){
-        changed = false
-        successfulness.set(bestGame,-1)
-        j = entryes.get(bestGame)
-        while(notation.charAt(j) != 'E'){
+      if (changed){                        //если была найдена лучша€ игра
+        changed = false                    //сбрасываем флаг того, что была найдена лучша€ игра
+        successfulness.set(bestGame,-1)    //и сбрасываем счет лучшей игры
+        j = entryes.get(bestGame)          //становимс€ в начало этой игры
+        while(notation.charAt(j) != 'E'){  //переписываем еЄ в буфер
           sortedNotation.append(notation.charAt(j))
           j+=1
         }
-        sortedNotation.append('E')
-        if (i+1 < entryes.size()){
+        sortedNotation.append('E')         //завершаем игру спец. символом
+        if (i+1 < entryes.size()){         //если ещЄ есть игры, продолжаем формирование нотации
           WriteOrderedBTW(i+1)
         }
       }
     }
-    WriteOrderedBTW(0)
-    sortedNotation
+    WriteOrderedBTW(0)  //сам вызов функции
+    sortedNotation      //возвращаем результат
   }
   
-  def SortNotationWTB(notation : java.lang.StringBuilder) : java.lang.StringBuilder = {
+  //функци€ сортировки от худшей игры к лучшей, почти идентична предыдущей
+  def SortNotationWTB(notation : java.lang.StringBuilder, isAlternative : Boolean) : java.lang.StringBuilder = {
     var game = 0
     var entryes = new java.util.Vector [Int]
     var successfulness = new java.util.Vector [Int]
     var sortedNotation = new java.lang.StringBuilder
     entryes.add(0)
     successfulness.add(0)
+    
     @tailrec
     def CollectInf(i : Int) : Unit = {
-      if (notation.charAt(i) == 'A') {
+      if (notation.charAt(i) == 'A' && !isAlternative || 
+          isAlternative && notation.charAt(i) >= 'A' && notation.charAt(i) <= 'Z') {
         successfulness.set(game, successfulness.get(game)+1)
       }
       if (notation.charAt(i) == 'E'){
@@ -95,13 +97,15 @@ object Sorter {
         CollectInf(i+1)
       }
     }
+    
     CollectInf(0)
+    
     @tailrec
     def WriteOrderedWTB(i : Int) : Unit = {
       var changed : Boolean = false
       var j = 0
       var worstGame = 0
-      var minScore = 1000000
+      var minScore = 2000000000  //выставл€ем недос€гаемый счет
       while (j < game){
         if (successfulness.get(j) < minScore){
           changed = true
@@ -112,7 +116,7 @@ object Sorter {
       }
       if (changed){
         changed = false
-        successfulness.set(worstGame,1234567)
+        successfulness.set(worstGame,2000000000)  //выставл€ем недос€гаемый счет
         j = entryes.get(worstGame)
         while(notation.charAt(j) != 'E'){
           sortedNotation.append(notation.charAt(j))
@@ -124,6 +128,7 @@ object Sorter {
         }
       }
     }
+    
     WriteOrderedWTB(0)
     sortedNotation
   }

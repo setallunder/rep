@@ -55,6 +55,7 @@
                   <MenuItem mnemonicParsing="false" onAction="#StartHandle" text="Start" />
                   <Menu mnemonicParsing="false" text="THEN">
                     <items>
+                        <RadioMenuItem fx:id="alternativeSort" mnemonicParsing="false" text="Alternatie sort" />
                         <RadioMenuItem fx:id="scalaSort" mnemonicParsing="false" text="Scala Sort">
                            <toggleGroup>
                               <ToggleGroup fx:id="Tool_of_sorting" />

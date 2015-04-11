@@ -46,6 +46,8 @@ public class SnakesWindowController {
 	@FXML
 	private RadioMenuItem hard;
 	@FXML
+	private RadioMenuItem alternativeSort;
+	@FXML
 	private RadioMenuItem scalaSort;
 	@FXML
 	private RadioMenuItem javaSort;
@@ -307,5 +309,9 @@ public class SnakesWindowController {
 		else{
 			return 1;
 		}
+	}
+	
+	public boolean isAlternativeSort(){
+		return alternativeSort.isSelected();
 	}
 }
